@@ -17,11 +17,12 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
      * @throws NullPointerException if data argument is null, we do not allow
      * null values to be stored within a SortedCollection
      */
+    @Override
     public void insert(T data) throws NullPointerException {
         if (root == null) {
-            root = new BinaryNode<T>(data);
+            root = new BinaryNode<>(data);
         } else {
-            BinaryNode<T> newNode = new BinaryNode<T>(data);
+            BinaryNode<T> newNode = new BinaryNode<>(data);
             insertHelper(newNode, root);
         }
     }
@@ -58,6 +59,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
      * @return true if the collection contains data one or more times, 
      * and false otherwise
      */
+    @Override
     public boolean contains(Comparable<T> find) {
         if (root == null) {
             return false;
@@ -122,6 +124,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
      * being counted separately within the value returned.
      * @return the number of values in the collection, including duplicates
      */
+    @Override
     public int size() {
         if (root != null) {
            return sizeHelper(root);
@@ -145,6 +148,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
      * Checks if the collection is empty.
      * @return true if the collection contains 0 values, false otherwise
      */
+    @Override
     public boolean isEmpty() {
         if (root == null) {
             return true;
@@ -161,6 +165,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
      * Clears tree of all nodes by setting root to null.
      * Java garbage collector should delete all other nodes automatically.
      */
+    @Override
     public void clear() {
         root = null;
     }
