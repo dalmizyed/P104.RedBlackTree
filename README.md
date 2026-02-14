@@ -1,18 +1,3 @@
-## Getting Started
+Red-Black Trees are self-balancing Binary Search Trees that ensure that search, insertion, and deletion operations for a tree with N nodes will take in the worst case in the order of log(N) steps. Red-Black Trees achieve this by regularly re-balancing the tree with the help of rotations after an insertion or deletion.
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
-
-## Folder Structure
-
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+In this assignment, you will implement the Red-Black Tree insertion algorithm in a new, instantiable class that extends your BSTRotation class from P102. You are not required to implement the Red-Black Tree deletion algorithm.
