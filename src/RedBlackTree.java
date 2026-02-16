@@ -235,11 +235,41 @@ public class RedBlackTree<T extends Comparable<T>> extends BSTRotation<T> {
 
         return true;
     }
+
+    /**
+     * Tests a RedBlackTree with the insertion order (Q, J, V, F, L, T, X, W, Z).
+     * Tests insertion of the character 'U' into this tree.
+     * (This example was question 2 on the RBTInsert quiz).
+     * @return true if the final tree has the correct expected level-order with the correct colors.
+     */
+    public static boolean test4() {
+        RedBlackTree<Character> tree = new RedBlackTree<>();
+
+        // Set up initial tree
+        char[] data = {'Q', 'J', 'V', 'F', 'L', 'T', 'X', 'W', 'Z'};
+
+        for (char dataPoint : data) {
+            tree.insert(dataPoint);
+            System.out.println(tree);
+        }
+
+        // Insert 'U'
+        tree.insert('U');
+        System.out.println(tree);
+
+        // Check if final tree structure matches expected level-order.
+        if (!tree.toString().equalsIgnoreCase("[ \u001B[0mQ\u001B[0m, \u001B[0mJ\u001B[0m, \u001B[31mV\u001B[0m, \u001B[31mF\u001B[0m, \u001B[31mL\u001B[0m, \u001B[0mT\u001B[0m, \u001B[0mX\u001B[0m, \u001B[31mU\u001B[0m, \u001B[31mW\u001B[0m, \u001B[31mZ\u001B[0m ]")) {
+            return false;
+        }
+
+        return true;
+    }
     
     public static void main (String[] args) {
         System.out.println("Test 1: " + test1() + "\n");
         System.out.println("Test 2: " + test2() + "\n");
         System.out.println("Test 3: " + test3() + "\n");
+        System.out.println("Test 4: " + test4() + "\n");
     }
 
 }
