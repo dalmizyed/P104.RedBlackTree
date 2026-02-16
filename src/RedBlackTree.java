@@ -53,7 +53,159 @@ public class RedBlackTree<T extends Comparable<T>> extends BSTRotation<T> {
      * @param newNode a newly inserted red node, or a node turned red by previous repair
      */
     protected void ensureRedProperty(RedBlackNode<T> newNode) {
-        // TODO: Implement this method.
+        if (newNode != null && newNode.getUp() != null) {
+            RedBlackNode<T> parent = newNode.getUp();
+
+            // Check if there is a red property violation.
+            if (!newNode.isBlackNode() && !parent.isBlackNode()) {
+                RedBlackNode<T> aunt = null;
+
+                // Discover which node is newNode's aunt.
+                if (parent.getUp() != null) {
+                    RedBlackNode<T> grandparent = parent.getUp();
+
+                    // Check if parent is the right or left child of grandparent.
+                    if (grandparent.getRight() == parent) {     // Parent is right child, aunt should be left child.
+                        aunt = grandparent.getLeft();
+                        //System.out.println("Aunt of " + newNode + " = " + aunt);
+                    } else if (grandparent.getLeft() == parent) {       // Parent is left child, aunt should be right child.
+                        aunt = grandparent.getRight();
+                        //System.out.println("Aunt of " + newNode + " = " + aunt);
+                    }
+
+                    // Check if aunt is red or black (or null).
+                    if (aunt == null || aunt.isBlackNode()) {
+                        // Aunt is black or null:
+
+                        /* 
+                        If child and parent are not aligned, rotate child up over parent first, then rotate child up 
+                        over grandparent. For aligned case, rotate parent up over grandparent.
+                        */ 
+                        RedBlackNode<T> promoted = null;
+                        if ((grandparent.getRight() == parent && parent.getLeft() == newNode) || (grandparent.getLeft() == parent && parent.getRight() == newNode)) {
+                            // Zig-zag case: Rotate child up over parent, then rotate child up over grandparent.
+                            this.rotate(newNode, parent);
+
+                            if (newNode.getUp() != null) {
+                                this.rotate(newNode, newNode.getUp());
+                                promoted = newNode;
+                            }
+
+                        } else {
+                            // Aligned case: rotate parent up over grandparent.
+                            this.rotate(parent, grandparent);
+                            promoted = parent;
+                        }
+
+                        // After rotation, set promoted node to black and original grandparent to red.
+                        if (promoted != null) {
+                            if (!promoted.isBlackNode()) {
+                                promoted.flipColor();
+                            }
+                            if (grandparent.isBlackNode()) {
+                                grandparent.flipColor();
+                            }
+                        }
+
+                    } else {
+                        // Aunt is red:
+
+                        // Recolor grandparent and its children to repair.
+                        recolor(grandparent);
+
+                        // Now check grandparent to see if we created a new red property violation.
+                        ensureRedProperty(grandparent);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Recursively flips the color of all nodes in the tree except the one we want (the one we just inserted).
+     * @param node current node to flip (start with root node)
+     * @param newNode node to ignore, pass newly inserted node.
+     */
+    private void recolor(RedBlackNode<T> grandparent) {
+        if (grandparent == null) {
+            return;
+        }
+
+        // Standard recolor: make grandparent red and its two children black.
+        if (grandparent.isBlackNode()) {
+            grandparent.flipColor();
+        }
+
+        RedBlackNode<T> left = grandparent.getLeft();
+        RedBlackNode<T> right = grandparent.getRight();
+
+        if (left != null && !left.isBlackNode()) {
+            left.flipColor();
+        }
+        if (right != null && !right.isBlackNode()) {
+            right.flipColor();
+        }
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------------//
+    //                                                          TEST METHODS                                                       //
+    //-----------------------------------------------------------------------------------------------------------------------------//
+
+    public static boolean test1() {
+        RedBlackTree<Integer> tree = new RedBlackTree<>();
+
+        int[] data = {14, 7, 18, 23};
+
+        for (int dataPoint : data) {
+            tree.insert(dataPoint);
+            System.out.println(tree);
+        }
+
+        if (!tree.toString().equalsIgnoreCase("[ \u001B[0m14\u001B[0m, \u001B[0m7\u001B[0m, \u001B[0m18\u001B[0m, \u001B[31m23\u001B[0m ]")) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean test2() {
+        RedBlackTree<Integer> tree = new RedBlackTree<>();
+
+        int[] data = {14, 7, 18, 23, 1, 11, 20};
+
+        for (int dataPoint : data) {
+            tree.insert(dataPoint);
+            System.out.println(tree);
+        }
+
+        if (!tree.toString().equalsIgnoreCase("[ \u001B[0m14\u001B[0m, \u001B[0m7\u001B[0m, \u001B[0m20\u001B[0m, \u001B[31m1\u001B[0m, \u001B[31m11\u001B[0m, \u001B[31m18\u001B[0m, \u001B[31m23\u001B[0m ]")) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean test3() {
+        RedBlackTree<Integer> tree = new RedBlackTree<>();
+
+        int[] data = {14, 7, 18, 23, 1, 11, 20, 29, 25, 27};
+
+        for (int dataPoint : data) {
+            tree.insert(dataPoint);
+            System.out.println(tree);
+        }
+
+        if (!tree.toString().equalsIgnoreCase("[ \u001B[0m20\u001B[0m, \u001B[31m14\u001B[0m, \u001B[31m25\u001B[0m, \u001B[0m7\u001B[0m, \u001B[0m18\u001B[0m, \u001B[0m23\u001B[0m, \u001B[0m29\u001B[0m, \u001B[31m1\u001B[0m, \u001B[31m11\u001B[0m, \u001B[31m27\u001B[0m ]")) {
+            return false;
+        }
+
+        return true;
+    }
+    
+    public static void main (String[] args) {
+        System.out.println("Test 1: " + test1() + "\n");
+        System.out.println("Test 2: " + test2() + "\n");
+        System.out.println("Test 3: " + test3() + "\n");
     }
 
 }

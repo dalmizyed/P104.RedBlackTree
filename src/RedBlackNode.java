@@ -58,11 +58,12 @@ public class RedBlackNode<T> extends BinaryNode<T> {
 
     /**
      * Returns a string representation for this node.
+     * (EDIT: instead of it returning this.data.toString + ".b" or ".r", I changed it to color the string either red or black).
      * @return a string representation of the node's value and color
      */
     @Override
     public String toString() {
-        return this.data.toString() + ( this.isBlackNode() ? ".b" : ".r" );
+        return ( this.isBlackNode() ? "\u001B[0m" : "\u001B[31m" ) + this.data.toString() + "\u001B[0m";
     }
 
 }

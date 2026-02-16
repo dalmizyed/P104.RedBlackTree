@@ -19,6 +19,9 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
      */
     @Override
     public void insert(T data) throws NullPointerException {
+        if (data == null) {
+            System.err.println("ERROR in insert(): Cannot insert a null value. (NullPointerException)");
+        }
         if (root == null) {
             root = new BinaryNode<>(data);
         } else {
