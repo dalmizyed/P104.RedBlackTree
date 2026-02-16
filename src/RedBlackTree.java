@@ -119,6 +119,12 @@ public class RedBlackTree<T extends Comparable<T>> extends BSTRotation<T> {
                 }
             }
         }
+
+        RedBlackNode<T> redBlackRoot = (RedBlackNode<T>)this.root;
+
+        if (!redBlackRoot.isBlackNode()) {
+            redBlackRoot.flipColor();
+        }
     }
 
     /**
@@ -151,6 +157,15 @@ public class RedBlackTree<T extends Comparable<T>> extends BSTRotation<T> {
     //                                                          TEST METHODS                                                       //
     //-----------------------------------------------------------------------------------------------------------------------------//
 
+    /**
+     * Tests a RedBlackTree with the insertion order (14, 7, 18, 23).
+     * This case was gone over during lecture.
+     * In this case, the program will identify and repair a red property violation when 18 is inserted,
+     * and then once again when 23 is inserted.
+     * Tests the repair case for when the aunt is red.
+     * @return true if the final tree has the correct expected level-order with the correct colors 
+     * following two red property violation repair jobs.
+     */
     public static boolean test1() {
         RedBlackTree<Integer> tree = new RedBlackTree<>();
 
@@ -168,6 +183,15 @@ public class RedBlackTree<T extends Comparable<T>> extends BSTRotation<T> {
         return true;
     }
 
+    /**
+     * Tests a RedBlackTree with the insertion order (14, 7, 18, 23, 1, 11, 20).
+     * This case was gone over during lecture.
+     * In this case, the program will identify and repair a red property violation when 18 is inserted,
+     * when 23 is inserted, and once again when 20 is inserted.
+     * Tests both the repair cases, both when the aunt is red, and when the aunt is null.
+     * @return true if the final tree has the correct expected level-order with the correct colors 
+     * following three red property violation repair jobs.
+     */
     public static boolean test2() {
         RedBlackTree<Integer> tree = new RedBlackTree<>();
 
@@ -185,6 +209,16 @@ public class RedBlackTree<T extends Comparable<T>> extends BSTRotation<T> {
         return true;
     }
 
+    /**
+     * Tests a RedBlackTree with the insertion order (14, 7, 18, 23, 1, 11, 20, 29, 25, 27).
+     * This case was gone over during lecture.
+     * In this case, the program will identify and repair a red property violation when 18, 23, 20, and now 
+     * also when 29, 25, and 27 are inserted. Tests both the repair cases, both when the aunt is red, 
+     * and when the aunt is null, as well as both when the parent, child, and grandparent are aligned vs.
+     * when they are in a zig-zag formation.
+     * @return true if the final tree has the correct expected level-order with the correct colors 
+     * following six red property violation repair jobs, and almost full tree rearrangement.
+     */
     public static boolean test3() {
         RedBlackTree<Integer> tree = new RedBlackTree<>();
 
